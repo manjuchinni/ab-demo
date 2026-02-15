@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Fast Application - NeoDigital Bank</title>
+
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f4f7fb;
+  text-align: center;
+  padding-top: 80px;
+}
+
+.card {
+  background: white;
+  width: 350px;
+  margin: auto;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 5px 20px rgba(0,0,0,0.1);
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #2c5364;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #203a43;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2>Quick 2-Step Application</h2>
+  <input placeholder="Full Name">
+  <input placeholder="Mobile Number">
+  <button onclick="submitForm()">Submit</button>
+</div>
+
+<script>
+function submitForm() {
+    alert("Application Submitted Successfully!");
+}
+</script>
+
+</body>
+</html>
