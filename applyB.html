@@ -1,70 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Detailed Application - NeoDigital Bank</title>
-
-<style>
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: #f4f7fb;
-  text-align: center;
-  padding-top: 60px;
-}
-
-.card {
-  background: white;
-  width: 400px;
-  margin: auto;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0px 5px 20px rgba(0,0,0,0.1);
-}
-
-h2 {
-  margin-bottom: 20px;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-button {
-  width: 100%;
-  padding: 12px;
-  background: #0f2027;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #203a43;
-}
-</style>
+    <title>Application - Variant B</title>
 </head>
+<body style="font-family: Arial; text-align:center; margin-top:100px;">
 
-<body>
+<h2>Variant B - Fast 30-Second Approval</h2>
 
-<div class="card">
-  <h2>Detailed 4-Step Application</h2>
-  <input placeholder="Full Name">
-  <input placeholder="Mobile Number">
-  <input placeholder="Email Address">
-  <input placeholder="City">
-  <button onclick="submitForm()">Submit</button>
-</div>
+<input type="text" placeholder="Full Name"><br><br>
+<input type="text" placeholder="Mobile Number"><br><br>
 
-<script>
+<button onclick="submitForm()">Submit</button>
+
 <script>
 
 function submitForm() {
 
     let data = JSON.parse(localStorage.getItem("data"));
+
+    if (!data) {
+        data = { aVisitors:0, bVisitors:0, aConversions:0, bConversions:0 };
+    }
+
     let variant = localStorage.getItem("variant");
 
     if (variant === "A") {
@@ -79,8 +36,6 @@ function submitForm() {
 
     window.location.href = "index.html";
 }
-
-</script>
 
 </script>
 
