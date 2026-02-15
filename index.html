@@ -5,89 +5,142 @@
 
 <style>
 body {
-  margin: 0;
   font-family: Arial, Helvetica, sans-serif;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  background: linear-gradient(to right, #203a43, #2c5364);
   color: white;
   text-align: center;
-}
-
-.container {
-  padding-top: 120px;
-}
-
-h1 {
-  font-size: 48px;
-  margin-bottom: 20px;
-}
-
-p {
-  font-size: 20px;
-  margin-bottom: 40px;
+  padding-top: 100px;
 }
 
 button {
-  padding: 15px 35px;
+  padding: 15px 30px;
   font-size: 18px;
+  background: white;
+  color: #203a43;
   border: none;
   border-radius: 8px;
-  background-color: #00c6ff;
-  color: white;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #0072ff;
+  background: #f0f0f0;
+}
+
+.dashboard {
+  margin-top: 50px;
+  background: white;
+  color: black;
+  padding: 20px;
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 10px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-  <h1>Open Your Digital Bank Account</h1>
-  <p>100% Online • 5 Minutes • Zero Paperwork</p>
-  <button onclick="startExperiment()">Start Application</button>
+<h1>Open Your Digital Bank Account</h1>
+<p>100% online. Zero paperwork.</p>
+
+<button onclick="startApplication()">Start Application</button>
+
+<div class="dashboard">
+<h3>Experiment Dashboard</h3>
+<p>Variant A Visitors: <span id="aVisitors">0</span></p>
+<p>Variant A Conversions: <span id="aConversions">0</span></p>
+<p>Variant B Visitors: <span id="bVisitors">0</span></p>
+<p>Variant B Conversions: <span id="bConversions">0</span></p>
+<p><strong>Conversion Rate A:</strong> <span id="crA">0%</span></p>
+<p><strong>Conversion Rate B:</strong> <span id="crB">0%</span></p>
+<p><strong>Statistical Significance (Z-Score):</strong> <span id="zScore">0</span></p>
+<button onclick="toggleExperiment()">Toggle Experiment ON/OFF</button>
 </div>
 
 <script>
 
-// ===== TRAFFIC CONTROL =====
-let trafficSplit = 0.5; // 50% A, 50% B (change anytime)
+// ====== SETTINGS ======
+let experimentOn = true;
+let trafficSplit = 50; // % traffic to A
 
-// ===== VISITOR ID =====
-function getVisitorId() {
-    let id = localStorage.getItem("visitor_id");
-    if (!id) {
-        id = crypto.randomUUID();
-        localStorage.setItem("visitor_id", id);
-    }
-    return id;
+// ====== STORAGE ======
+if (!localStorage.getItem("data")) {
+    localStorage.setItem("data", JSON.stringify({
+        aVisitors: 0,
+        bVisitors: 0,
+        aConversions: 0,
+        bConversions: 0
+    }));
 }
 
-// ===== VARIANT ASSIGNMENT =====
-function assignVariant() {
-    let existing = localStorage.getItem("variant");
-    if (existing) return existing;
-
-    let random = Math.random();
-    let variant = random < trafficSplit ? "A" : "B";
-    localStorage.setItem("variant", variant);
-    return variant;
+function getData() {
+    return JSON.parse(localStorage.getItem("data"));
 }
 
-// ===== MAIN FUNCTION =====
-function startExperiment() {
+function saveData(data) {
+    localStorage.setItem("data", JSON.stringify(data));
+}
 
-    let visitorId = getVisitorId();
-    let variant = assignVariant();
+function startApplication() {
 
-    if (variant === "A") {
+    if (!experimentOn) {
         window.location.href = "applyA.html";
-    } else {
-        window.location.href = "applyB.html";
+        return;
     }
+
+    let variant = localStorage.getItem("variant");
+
+    if (!variant) {
+        let random = Math.random() * 100;
+        variant = random < trafficSplit ? "A" : "B";
+        localStorage.setItem("variant", variant);
+
+        let data = getData();
+        if (variant === "A") data.aVisitors++;
+        else data.bVisitors++;
+        saveData(data);
+    }
+
+    if (variant === "A") window.location.href = "applyA.html";
+    else window.location.href = "applyB.html";
 }
+
+function updateDashboard() {
+    let data = getData();
+
+    document.getElementById("aVisitors").innerText = data.aVisitors;
+    document.getElementById("bVisitors").innerText = data.bVisitors;
+    document.getElementById("aConversions").innerText = data.aConversions;
+    document.getElementById("bConversions").innerText = data.bConversions;
+
+    let crA = data.aVisitors ? (data.aConversions / data.aVisitors * 100).toFixed(2) : 0;
+    let crB = data.bVisitors ? (data.bConversions / data.bVisitors * 100).toFixed(2) : 0;
+
+    document.getElementById("crA").innerText = crA + "%";
+    document.getElementById("crB").innerText = crB + "%";
+
+    // Z-score calculation
+    let p1 = data.aVisitors ? data.aConversions / data.aVisitors : 0;
+    let p2 = data.bVisitors ? data.bConversions / data.bVisitors : 0;
+
+    let p = (data.aConversions + data.bConversions) /
+            (data.aVisitors + data.bVisitors || 1);
+
+    let se = Math.sqrt(p * (1 - p) *
+            (1/(data.aVisitors||1) + 1/(data.bVisitors||1)));
+
+    let z = se ? (p1 - p2) / se : 0;
+
+    document.getElementById("zScore").innerText = z.toFixed(2);
+}
+
+function toggleExperiment() {
+    experimentOn = !experimentOn;
+    alert("Experiment is now " + (experimentOn ? "ON" : "OFF"));
+}
+
+updateDashboard();
 
 </script>
 
