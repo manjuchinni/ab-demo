@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>NeoDigital Bank</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: white;
+  text-align: center;
+}
+
+.container {
+  padding-top: 120px;
+}
+
+h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 20px;
+  margin-bottom: 40px;
+}
+
+button {
+  padding: 15px 35px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  background-color: #00c6ff;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0072ff;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Open Your Digital Bank Account</h1>
+  <p>100% Online • 5 Minutes • Zero Paperwork</p>
+  <button onclick="startExperiment()">Start Application</button>
+</div>
+
+<script>
+
+// ===== TRAFFIC CONTROL =====
+let trafficSplit = 0.5; // 50% A, 50% B (change anytime)
+
+// ===== VISITOR ID =====
+function getVisitorId() {
+    let id = localStorage.getItem("visitor_id");
+    if (!id) {
+        id = crypto.randomUUID();
+        localStorage.setItem("visitor_id", id);
+    }
+    return id;
+}
+
+// ===== VARIANT ASSIGNMENT =====
+function assignVariant() {
+    let existing = localStorage.getItem("variant");
+    if (existing) return existing;
+
+    let random = Math.random();
+    let variant = random < trafficSplit ? "A" : "B";
+    localStorage.setItem("variant", variant);
+    return variant;
+}
+
+// ===== MAIN FUNCTION =====
+function startExperiment() {
+
+    let visitorId = getVisitorId();
+    let variant = assignVariant();
+
+    if (variant === "A") {
+        window.location.href = "applyA.html";
+    } else {
+        window.location.href = "applyB.html";
+    }
+}
+
+</script>
+
+</body>
+</html>
