@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Detailed Application - NeoDigital Bank</title>
+
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f4f7fb;
+  text-align: center;
+  padding-top: 60px;
+}
+
+.card {
+  background: white;
+  width: 400px;
+  margin: auto;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 5px 20px rgba(0,0,0,0.1);
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #0f2027;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #203a43;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2>Detailed 4-Step Application</h2>
+  <input placeholder="Full Name">
+  <input placeholder="Mobile Number">
+  <input placeholder="Email Address">
+  <input placeholder="City">
+  <button onclick="submitForm()">Submit</button>
+</div>
+
+<script>
+function submitForm() {
+    alert("Application Submitted Successfully!");
+}
+</script>
+
+</body>
+</html>
