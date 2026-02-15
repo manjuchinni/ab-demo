@@ -60,9 +60,28 @@ button:hover {
 </div>
 
 <script>
+<script>
+
 function submitForm() {
+
+    let data = JSON.parse(localStorage.getItem("data"));
+    let variant = localStorage.getItem("variant");
+
+    if (variant === "A") {
+        data.aConversions++;
+    } else {
+        data.bConversions++;
+    }
+
+    localStorage.setItem("data", JSON.stringify(data));
+
     alert("Application Submitted Successfully!");
+
+    window.location.href = "index.html";
 }
+
+</script>
+
 </script>
 
 </body>
